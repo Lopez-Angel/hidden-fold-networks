@@ -10,8 +10,7 @@ arXiv link (coming soon)
 <img width="1100" src="images/teaser.png">
 </p>
 
-Code developed originally from a fork of [hidden-networks](https://github.com/allenai/hidden-networks).  
-Original/modified files have a signed Apache License 2.0 header.
+The code in this repository was originally developed from a fork of [hidden-networks](https://github.com/allenai/hidden-networks).  
 
 ## Requirements
 Python 3.6 or higher. CUDA 11.0.  
