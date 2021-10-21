@@ -107,6 +107,7 @@ class Builder(object):
             fan = nn.init._calculate_correct_fan(conv.weight, args.mode)
             if args.scale_fan:
                 fan = fan * args.top_k
+                # fan = fan * (1 - args.top_k)
             gain = nn.init.calculate_gain(args.nonlinearity)
             std = gain / math.sqrt(fan)
             conv.weight.data = conv.weight.data.sign() * std
@@ -116,7 +117,7 @@ class Builder(object):
             fan = nn.init._calculate_correct_fan(conv.weight, args.mode)
             if args.scale_fan:
                 fan = fan * args.top_k
-
+                # fan = fan * (1 - args.top_k)
             gain = nn.init.calculate_gain(args.nonlinearity)
             std = gain / math.sqrt(fan)
             conv.weight.data = torch.ones_like(conv.weight.data) * std
@@ -126,6 +127,7 @@ class Builder(object):
             if args.scale_fan:
                 fan = nn.init._calculate_correct_fan(conv.weight, args.mode)
                 fan = fan * args.top_k
+                # fan = fan * (1 - args.top_k)
                 gain = nn.init.calculate_gain(args.nonlinearity)
                 std = gain / math.sqrt(fan)
                 with torch.no_grad():

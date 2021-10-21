@@ -47,7 +47,10 @@ def main():
     print(args)
 
     if args.seed is not None:
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
         random.seed(args.seed)
+        np.random.seed(args.seed)
         torch.manual_seed(args.seed)
         torch.cuda.manual_seed(args.seed)
         torch.cuda.manual_seed_all(args.seed)
@@ -138,7 +141,6 @@ def main_worker(args):
 
     # Start training
     for epoch in range(args.start_epoch, args.epochs):
-        lr_policy(epoch, iteration=None)
         modifier(args, epoch, model)
 
         cur_lr = get_lr(optimizer)
@@ -149,6 +151,8 @@ def main_worker(args):
             data.train_loader, model, criterion, optimizer, epoch, args, writer=writer
         )
         train_time.update((time.time() - start_train) / 60)
+        
+        lr_policy(epoch, iteration=None)
 
         # evaluate on validation set
         start_validation = time.time()
@@ -216,6 +220,8 @@ def main_worker(args):
             base_config=args.config,
             name=args.name,
         )
+    print(f"Best train acc.:\t{best_acc1:.2f}% valid, {best_train_acc1:.2f}% train @epoch {best_epoch}")
+    print(f"Test acc.:\t{test_acc1:.2f}%")
 
 
 def get_trainer(args):
@@ -242,7 +248,10 @@ def set_gpu(args, model):
             args.multigpu[0]
         )
 
-    cudnn.benchmark = True
+    if args.seed == None:
+        cudnn.benchmark = True
+    else:
+        cudnn.benchmark = False 
 
     return model
 
@@ -308,11 +317,7 @@ def get_model(args):
     model = models.__dict__[args.arch]()
 
     # applying sparsity to the network
-    if (
-        args.conv_type != "DenseConv"
-        and args.conv_type != "SampleSubnetConv"
-        and args.conv_type != "ContinuousSparseConv"
-    ):
+    if (args.conv_type != "DenseConv"):
         if args.top_k < 0:
             raise ValueError("Need to set a positive top k")
 
