@@ -4,7 +4,7 @@ by Ángel López García-Arias, Masanori Hashimoto, Masato Motomura, and Jaehoon
 
 Accepted at The British Machine Vision Conference (BMVC) 2021.
 
-arXiv link (coming soon)
+[arXiv link](https://arxiv.org/abs/2111.12330)
 
 <p align="center">
 <img width="1100" src="images/teaser.png">
