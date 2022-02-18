@@ -29,7 +29,7 @@ def parse_arguments():
         "--data", help="path to dataset base directory", default="/mnt/disk1/datasets"
     )
     parser.add_argument("--optimizer", help="Which optimizer to use", default="sgd")
-    parser.add_argument("--set", help="name of dataset", type=str, default="ImageNet")
+    parser.add_argument("--set", help="name of dataset", type=str, default="CIFAR10")
     parser.add_argument(
         "-a", "--arch", metavar="ARCH", default="ResNet18", help="model architecture"
     )
@@ -103,7 +103,7 @@ def parse_arguments():
         metavar="N",
         help="print frequency (default: 10)",
     )
-    parser.add_argument("--num-classes", default=10, type=int)
+    parser.add_argument("--n-classes", default=10, type=int)
     parser.add_argument(
         "--resume",
         default="",
@@ -186,7 +186,7 @@ def parse_arguments():
         help="One batch train set for debugging purposes (test overfitting)",
     )
     parser.add_argument(
-        "--conv-type", type=str, default=None, help="What kind of sparsity to use"
+        "--conv-type", type=str, default='DenseConv', help="What kind of sparsity to use"
     )
     parser.add_argument(
         "--freeze-weights",
@@ -197,7 +197,7 @@ def parse_arguments():
     parser.add_argument(
         "--nonlinearity", default="relu", help="Nonlinearity used by initialization"
     )
-    parser.add_argument("--bn-type", default=None, help="BatchNorm type")
+    parser.add_argument("--bn-type", default='LearnedBatchNorm', help="BatchNorm type")
     parser.add_argument(
         "--init", default="kaiming_normal", help="Weight initialization modifications"
     )
@@ -230,6 +230,9 @@ def parse_arguments():
         type=float,
         default=None,
         help="Sample Baseline Subnet Init",
+    )
+    parser.add_argument(
+        "--split-valid", default=0.1, type=float, help="ratio of train samples used for validation"
     )
 
     args = parser.parse_args()
